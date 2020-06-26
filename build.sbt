@@ -6,18 +6,16 @@ organization in ThisBuild := "com.lambdarat"
 lazy val indigoV = "0.1.0"
 
 lazy val quadmist = (project in file("."))
+  .dependsOn(`quadmist-game`)
+  .aggregate(`quadmist-game`)
+
+lazy val `quadmist-game` = project
   .enablePlugins(ScalaJSPlugin, SbtIndigo)
   .settings(
     libraryDependencies ++= Seq(
       "io.indigoengine" %%% "indigo"            % indigoV,
-      "io.indigoengine" %%% "indigo-json-circe" % indigoV,
-      memeid,
-      newtype,
-      enumeratum,
-      mouse,
-      scalacheck          % Test
-    ) ++ scalatest ++ cats,
-    kindProjector,
+      "io.indigoengine" %%% "indigo-json-circe" % indigoV
+    ),
     showCursor := true,
     title := "Quadmist",
     gameAssetsDirectory := "assets"
