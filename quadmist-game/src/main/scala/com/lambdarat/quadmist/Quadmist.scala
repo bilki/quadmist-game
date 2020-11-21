@@ -1,53 +1,63 @@
 package com.lambdarat.quadmist
 
 import indigo._
-
+import indigo.scenes._
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-@JSExportTopLevel("IndigoGame")
-object Quadmist extends IndigoDemo[Unit, MyStartUpData, MyGameModel, MyViewModel] {
+@JSExportTopLevel("Quadmist")
+object Quadmist extends IndigoGame[Unit, Unit, Unit, Unit] {
 
   def boot(flags: Map[String, String]): BootResult[Unit] =
-    BootResult.noData(
-      defaultGameConfig
-        .withClearColor(ClearColor.fromHexString("0xFF00FF"))
-    )
+    BootResult(GameConfig.default.withViewport(640, 480), ())
 
-  def setup(
-      bootData: Unit,
-      assetCollection: AssetCollection,
-      dice: Dice
-  ): Startup[StartupErrors, MyStartUpData] =
-    Startup.Success(MyStartUpData())
+  def initialScene(bootData: Unit): Option[SceneName] =
+    None
 
-  def initialModel(startupData: MyStartUpData): MyGameModel =
-    MyGameModel()
+  def scenes(bootData: Unit): NonEmptyList[Scene[Unit, Unit, Unit]] =
+    NonEmptyList(EmptyScene)
 
-  def initialViewModel(startupData: MyStartUpData, model: MyGameModel): MyViewModel = MyViewModel()
+  def setup(bootData: Unit, assetCollection: AssetCollection, dice: Dice): Startup[Unit] =
+    Startup.Success(())
 
-  def updateModel(context: FrameContext, model: MyGameModel): GlobalEvent => Outcome[MyGameModel] =
+  def initialModel(startupData: Unit): Unit =
+    ()
+
+  def initialViewModel(startupData: Unit, model: Unit): Unit =
+    ()
+
+}
+
+object EmptyScene extends Scene[Unit, Unit, Unit] {
+
+  type SceneModel     = Unit
+  type SceneViewModel = Unit
+
+  val name: SceneName =
+    SceneName("empty")
+
+  val modelLens: Lens[Unit, Unit] =
+    Lens.keepLatest
+
+  val viewModelLens: Lens[Unit, Unit] =
+    Lens.keepLatest
+
+  val eventFilters: EventFilters =
+    EventFilters.Default
+
+  val subSystems: Set[SubSystem] =
+    Set()
+
+  def updateModel(context: FrameContext[Unit], model: Unit): GlobalEvent => Outcome[Unit] =
     _ => Outcome(model)
 
   def updateViewModel(
-      context: FrameContext,
-      model: MyGameModel,
-      viewModel: MyViewModel
-  ): Outcome[MyViewModel] =
-    Outcome(viewModel)
+      context: FrameContext[Unit],
+      model: Unit,
+      viewModel: Unit
+  ): GlobalEvent => Outcome[Unit] =
+    _ => Outcome(viewModel)
 
-  def present(
-      context: FrameContext,
-      model: MyGameModel,
-      viewModel: MyViewModel
-  ): SceneUpdateFragment =
-    noRender
+  def present(context: FrameContext[Unit], model: Unit, viewModel: Unit): SceneUpdateFragment =
+    SceneUpdateFragment.empty
+
 }
-
-// What does your game need to start? E.g. Parsing a level description file
-final case class MyStartUpData()
-
-// Your game model is anything you like!
-final case class MyGameModel()
-
-// Your view model is also ...anything you like!
-final case class MyViewModel()
