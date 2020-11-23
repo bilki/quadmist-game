@@ -4,11 +4,12 @@ import indigo._
 import indigo.scenes._
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-@JSExportTopLevel("Quadmist")
+@JSExportTopLevel("IndigoGame")
 object Quadmist extends IndigoGame[Unit, Unit, Unit, Unit] {
 
-  def boot(flags: Map[String, String]): BootResult[Unit] =
-    BootResult(GameConfig.default.withViewport(640, 480), ())
+  def boot(flags: Map[String, String]): BootResult[Unit] = {
+    BootResult(GameConfig.default.withViewport(640, 480).withClearColor(ClearColor.Blue), ())
+  }
 
   def initialScene(bootData: Unit): Option[SceneName] =
     None
