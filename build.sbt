@@ -22,8 +22,8 @@ lazy val `quadmist-game` = project
     showCursor := true,
     title := "Quadmist",
     gameAssetsDirectory := "assets",
-    windowStartWidth := 640,
-    windowStartHeight := 480
+    windowStartWidth := 1024,
+    windowStartHeight := 768
   )
   .dependsOn(`quadmist-common`)
 
