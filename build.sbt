@@ -9,7 +9,7 @@ lazy val quadmist = (project in file("."))
   .dependsOn(`quadmist-game`)
   .aggregate(`quadmist-common`, `quadmist-game`)
 
-lazy val `quadmist-common` = ProjectRef(file("quadmist-common"), "quadmist-common")
+lazy val `quadmist-common` = ProjectRef(file("quadmist-common"), "quadmist-common-subJS")
 
 lazy val `quadmist-game` = project
   .enablePlugins(ScalaJSPlugin, SbtIndigo)
