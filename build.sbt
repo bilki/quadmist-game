@@ -2,17 +2,18 @@ lazy val indigoV = "0.5.0"
 
 lazy val commonSettings = Seq(
   scalaVersion := "2.13.3",
-  scalacOptions += "-Ymacro-annotations"
+  scalacOptions += "-Ymacro-annotations",
+  version := "0.1.0-SNAPSHOT",
+  organization := "com.lambdarat"
 )
 
 lazy val quadmist = (project in file("."))
   .settings(commonSettings)
   .settings(
-    name := """quadmist""",
-    version := "0.1.0-SNAPSHOT",
-    organization := "com.lambdarat"
+    test in `quadmist-common` := {}
   )
   .dependsOn(`quadmist-game`)
+  .aggregate(`quadmist-common`, `quadmist-game`)
 
 lazy val `quadmist-common` = ProjectRef(file("quadmist-common"), "quadmist-common-subJS")
 
