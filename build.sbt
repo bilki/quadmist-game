@@ -1,18 +1,24 @@
-name in ThisBuild := """quadmist"""
-scalaVersion in ThisBuild := "2.13.3"
-version in ThisBuild := "0.1.0-SNAPSHOT"
-organization in ThisBuild := "com.lambdarat"
-
 lazy val indigoV = "0.5.0"
 
+lazy val commonSettings = Seq(
+  scalaVersion := "2.13.3",
+  scalacOptions += "-Ymacro-annotations"
+)
+
 lazy val quadmist = (project in file("."))
+  .settings(commonSettings)
+  .settings(
+    name := """quadmist""",
+    version := "0.1.0-SNAPSHOT",
+    organization := "com.lambdarat"
+  )
   .dependsOn(`quadmist-game`)
-  .aggregate(`quadmist-common`, `quadmist-game`)
 
 lazy val `quadmist-common` = ProjectRef(file("quadmist-common"), "quadmist-common-subJS")
 
 lazy val `quadmist-game` = project
   .enablePlugins(ScalaJSPlugin, SbtIndigo)
+  .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
       "io.indigoengine" %%% "indigo"            % indigoV,
@@ -27,7 +33,5 @@ lazy val `quadmist-game` = project
   )
   .dependsOn(`quadmist-common`)
 
-scalacOptions += "-Ymacro-annotations"
-
-addCommandAlias("buildGame", "project quadmist-game;compile;fastOptJS;indigoBuild")
-addCommandAlias("runGame", "project quadmist-game;compile;fastOptJS;indigoRun")
+addCommandAlias("buildGame", "project quadmist-game;compile;fastOptJS;indigoBuild;project /")
+addCommandAlias("runGame", "project quadmist-game;compile;fastOptJS;indigoRun;project /")
