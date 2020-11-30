@@ -2,6 +2,7 @@ package com.lambdarat.quadmist
 
 import com.lambdarat.quadmist.assets.Assets
 import com.lambdarat.quadmist.models.QuadmistSetupData
+import com.lambdarat.quadmist.sample.Sample
 import com.lambdarat.quadmist.scenes.EmptyScene
 import indigo._
 import indigo.scenes._
@@ -21,16 +22,22 @@ object Quadmist extends IndigoGame[Unit, QuadmistSetupData, Unit, Unit] {
   def scenes(bootData: Unit): NonEmptyList[Scene[QuadmistSetupData, Unit, Unit]] =
     NonEmptyList(EmptyScene)
 
-  def setup(bootData: Unit, assetCollection: AssetCollection, dice: Dice): Startup[QuadmistSetupData] = {
+  def setup(
+      bootData: Unit,
+      assetCollection: AssetCollection,
+      dice: Dice
+  ): Startup[QuadmistSetupData] = {
     val quadmistWS = WebSocketConfig(
       id = WebSocketId("quadmist"),
-      address = s"ws://localhost:8080/join/7919293f-88b9-411e-9920-57bff4c5a8cf"
+      address = s"ws://localhost:8080/join/${Sample.playerOneId.toUUID.value}"
     )
-    Startup.Success(
-      QuadmistSetupData(
-        quadmistWS = quadmistWS
+    Startup
+      .Success(
+        QuadmistSetupData(
+          quadmistWS = quadmistWS
+        )
       )
-    ).addGlobalEvents(WebSocketEvent.ConnectOnly(quadmistWS))
+      .addGlobalEvents(WebSocketEvent.ConnectOnly(quadmistWS))
   }
 
   def initialModel(startupData: QuadmistSetupData): Unit = {

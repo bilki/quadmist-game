@@ -3,9 +3,11 @@ package com.lambdarat.quadmist.scenes
 import com.lambdarat.quadmist.assets.Assets
 import com.lambdarat.quadmist.common.game.TurnState
 import com.lambdarat.quadmist.models.QuadmistSetupData
+import com.lambdarat.quadmist.sample.Sample
 import indigo._
 import indigo.scenes.{Lens, Scene, SceneName}
 import indigo.shared.networking.WebSocketId
+import io.circe.syntax._
 
 object EmptyScene extends Scene[QuadmistSetupData, Unit, Unit] {
 
@@ -35,8 +37,13 @@ object EmptyScene extends Scene[QuadmistSetupData, Unit, Unit] {
       import com.lambdarat.quadmist.common.codecs._
       import io.circe.parser._
 
-      println(parse(message).flatMap(_.hcursor.get[TurnState]("turn")))
+      val receivedJson = parse(message)
+      println(receivedJson.map(_.noSpaces).getOrElse("Failed parsing incoming JSON"))
+
       Outcome(model)
+        .addGlobalEvents(
+          WebSocketEvent.Send(Sample.playerOneHand.asJson.noSpaces, context.startUpData.quadmistWS)
+        )
     }
     case _                                                        => Outcome(model)
   }
