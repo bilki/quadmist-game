@@ -29,7 +29,7 @@ object Quadmist extends IndigoGame[Unit, QuadmistSetupData, Unit, Unit] {
   ): Startup[QuadmistSetupData] = {
     val quadmistWS = WebSocketConfig(
       id = WebSocketId("quadmist"),
-      address = s"ws://localhost:8080/join/${Sample.playerOneId.toUUID.value}"
+      address = s"ws://localhost:8080/join/${Sample.playerOneId.toUUID.show}"
     )
     Startup
       .Success(
