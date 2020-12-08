@@ -1,5 +1,3 @@
-lazy val indigoV = "0.5.0"
-
 lazy val commonSettings = Seq(
   scalaVersion := "2.13.3",
   scalacOptions += "-Ymacro-annotations",
@@ -7,7 +5,8 @@ lazy val commonSettings = Seq(
   organization := "com.lambdarat"
 )
 
-lazy val quadmist = (project in file("."))
+lazy val quadmist = project
+  .in(file("."))
   .settings(commonSettings)
   .settings(
     test in `quadmist-common` := {}
@@ -17,20 +16,31 @@ lazy val quadmist = (project in file("."))
 
 lazy val `quadmist-common` = ProjectRef(file("quadmist-common"), "quadmist-common-subJS")
 
+lazy val jsDeps = Def.setting {
+  val indigoV = "0.5.0"
+  val indigo  = Seq(
+    "io.indigoengine" %%% "indigo"            % indigoV,
+    "io.indigoengine" %%% "indigo-json-circe" % indigoV,
+    "io.indigoengine" %%% "indigo-extras"     % indigoV
+  )
+
+  val munit = "org.scalameta" %%% "munit" % "0.7.19" % Test
+
+  indigo :+ munit
+}
+
 lazy val `quadmist-game` = project
   .enablePlugins(ScalaJSPlugin, SbtIndigo)
   .settings(commonSettings)
   .settings(
-    libraryDependencies ++= Seq(
-      "io.indigoengine" %%% "indigo"            % indigoV,
-      "io.indigoengine" %%% "indigo-json-circe" % indigoV,
-      "io.indigoengine" %%% "indigo-extras"     % indigoV
-    ),
+    libraryDependencies ++= jsDeps.value,
     showCursor := true,
     title := "Quadmist",
     gameAssetsDirectory := "assets",
     windowStartWidth := 1024,
-    windowStartHeight := 768
+    windowStartHeight := 768,
+    scalaJSLinkerConfig in Test ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
+    testFrameworks += new TestFramework("munit.Framework")
   )
   .dependsOn(`quadmist-common`)
 
