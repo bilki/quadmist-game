@@ -1,6 +1,6 @@
 package com.lambdarat.quadmist
 
-import com.lambdarat.quadmist.assets.Assets
+import com.lambdarat.quadmist.assets.{Assets, Fonts}
 import com.lambdarat.quadmist.models.QuadmistSetupData
 import com.lambdarat.quadmist.sample.Sample
 import com.lambdarat.quadmist.scenes.EmptyScene
@@ -31,13 +31,16 @@ object Quadmist extends IndigoGame[Unit, QuadmistSetupData, Unit, Unit] {
       id = WebSocketId("quadmist"),
       address = s"ws://localhost:8080/join/${Sample.playerOneId.toUUID.show}"
     )
-    Startup
-      .Success(
-        QuadmistSetupData(
-          quadmistWS = quadmistWS
-        )
-      )
-      .addGlobalEvents(WebSocketEvent.ConnectOnly(quadmistWS))
+
+    val maybeFont = Fonts.buildFont(assetCollection)
+
+    maybeFont match {
+      case Some(font) =>
+        Startup
+          .Success(QuadmistSetupData(quadmistWS = quadmistWS))
+          .addFonts(font)
+      case None       => Startup.Failure("Failed to load font")
+    }
   }
 
   def initialModel(startupData: QuadmistSetupData): Unit = {
