@@ -14,14 +14,14 @@ object Assets {
   val freeName  = AssetName("free")
   val freeAsset = AssetType.Image(freeName, AssetPath(s"$baseUrl/free.png"))
 
-  val yosterImgName  = AssetName("yoster_image")
-  val yosterImgAsset = AssetType.Image(yosterImgName, AssetPath(s"$baseUrl/yoster.png"))
+  val ponderosaImgName  = AssetName("ponderosa_image")
+  val ponderosaImgAsset = AssetType.Image(ponderosaImgName, AssetPath(s"$baseUrl/ponderosa.png"))
 
-  val yosterJsonName  = AssetName("yoster_json")
-  val yosterJsonAsset = AssetType.Text(yosterJsonName, AssetPath(s"$baseUrl/yoster.json"))
+  val ponderosaJsonName  = AssetName("ponderosa_json")
+  val ponderosaJsonAsset = AssetType.Text(ponderosaJsonName, AssetPath(s"$baseUrl/ponderosa.json"))
 
   val assets: Set[AssetType] =
-    Set(cardAsset, blockAsset, freeAsset, yosterImgAsset, yosterJsonAsset)
+    Set(cardAsset, blockAsset, freeAsset, ponderosaImgAsset, ponderosaJsonAsset)
 
-  val yosterFontKey = FontKey("yoster")
+  val ponderosaFontKey = FontKey("ponderosa")
 }

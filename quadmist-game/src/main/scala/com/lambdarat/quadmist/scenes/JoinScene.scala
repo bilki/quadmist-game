@@ -41,7 +41,7 @@ object JoinScene extends Scene[QuadmistSetupData, Board, Unit] {
       model: Board,
       viewModel: Unit
   ): SceneUpdateFragment = {
-    val welcomeMessage = Text("welcome", 0, 0, 1, Assets.yosterFontKey)
+    val welcomeMessage = Text("Welcome to quadmaster", 0, 0, 1, Assets.ponderosaFontKey)
     SceneUpdateFragment.empty.addGameLayerNodes(welcomeMessage)
   }
 }
